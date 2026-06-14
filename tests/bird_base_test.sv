@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 
 `ifndef BIRD_BASE_TEST_SV
 `define BIRD_BASE_TEST_SV

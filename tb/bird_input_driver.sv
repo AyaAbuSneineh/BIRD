@@ -1,4 +1,7 @@
+`timescale 1ns/1ps
 //BIRRD_INPUT_DRIVER_SV
+
+`ifndef BIRD_INPUT_DRIVER_S
 `define BIRD_INPUT_DRIVER_SV
 
 class bird_input_driver;

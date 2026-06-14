@@ -1,4 +1,6 @@
-BIRD_LOCAL_MONITOR_SV
+`timescale 1ns/1ps
+//BIRD_LOCAL_MONITOR_SV
+`ifndef BIRD_LOCAL_MONITOR_SV
 `define BIRD_LOCAL_MONITOR_SV
 
 class bird_local_monitor;
