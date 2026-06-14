@@ -1,8 +1,0 @@
-ahmad sous is very veryyy clever
-git branch          # عرض البرانشات
-git switch main     # رجوع للـ main
-git switch sous     # انتقال لبرانش sous
-git switch -c new   # إنشاء برانش جديد + دخول عليه
-git add .
-git commit -m "msg"
-git push -u origin sous
