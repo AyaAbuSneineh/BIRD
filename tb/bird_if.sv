@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 interface bird_if(input logic clk);
 
   // Global signal
