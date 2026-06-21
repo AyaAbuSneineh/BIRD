@@ -1,0 +1,88 @@
+commands 
+
+1. Compile
+mkdir -p logs
+vcs -full64 -sverilog -timescale=1ns/1ps -debug_access+all -f sim/filelist.f -l logs/compile.log -o simv
+
+
+2. Run كل التيستات Direct + Random
+NUM_PER_CASE=2 ./sim/run_all_tests_vcs.sh
+
+شوفي التقرير النهائي:
+
+cat logs/vcs_all/summary.txt
+
+3. Run directed test معين
+
+مثلاً:
+
+TEST=local_basic_test
+mkdir -p logs/vcs_directed
+./simv +TESTNAME=$TEST -l logs/vcs_directed/${TEST}.log
+
+شوفي نتيجته:
+
+grep "TEST RESULT" logs/vcs_directed/${TEST}.log
+
+شوفي تفاصيل الفشل:
+
+grep -i "fail\|error\|mismatch" logs/vcs_directed/${TEST}.log
+
+
+4. Run random_all_cases_test
+mkdir -p logs/vcs_random
+./simv +TESTNAME=random_all_cases_test +NUM_PER_CASE=2 +ntb_random_seed=random -l logs/vcs_random/random_all_cases_test.log
+
+شوفي كل نتائج الراندوم:
+
+grep "RANDOM_CASE_RESULT" logs/vcs_random/random_all_cases_test.log
+
+
+
+
+5. أشوف نتيجة random case معينة
+
+مثلاً:
+
+CASE="random_local_frag_zero_drop[1]"
+grep -F "$CASE" logs/vcs_random/random_all_cases_test.log
+
+أو فقط النتيجة:
+
+CASE="random_local_frag_zero_drop[1]"
+grep "RANDOM_CASE_RESULT" logs/vcs_random/random_all_cases_test.log | grep -F "$CASE"  
+
+
+remote single 
+
+functioonal
+cat docs/functional_coverage_report.md
+python3 sim/make_functional_coverage_report.py
+
+report coverage 
+
+ls -l sim/run_all_tests_vcs_cov_full.sh
+chmod +x sim/run_all_tests_vcs_cov_full.sh
+ls -l sim/run_all_tests_vcs_cov_full.sh
+
+./sim/run_all_tests_vcs_cov_full.sh
+
+
+rm -rf cov/urg_report
+
+urg -full64 \
+  -dir cov/vcs_cov.vdb \
+  -format both \
+  -report cov/urg_report \
+  > logs/vcs_cov_all/urg.log 2>&1
+
+echo $?
+tail -80 logs/vcs_cov_all/urg.log
+ls -l cov/urg_report/dashboard.html
+
+
+
+
+
+
+
