@@ -24,11 +24,6 @@
 //   remote output word 1 = {16'h0000, regenerated_crc}
 //   no local output
 //   drop_cnt = 0
-//
-// Spec reason:
-//   Remote fragments may arrive out of order. They must be buffered,
-//   reordered by FRAG_NUM, merged, and sent with a regenerated CRC16.
-// ============================================================
 
 `ifndef REMOTE_TWO_FRAGMENT_OUT_OF_ORDER_TEST_SV
 `define REMOTE_TWO_FRAGMENT_OUT_OF_ORDER_TEST_SV

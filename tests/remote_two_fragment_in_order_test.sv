@@ -24,17 +24,6 @@
 //   remote output word 1 = {16'h0000, regenerated_crc}
 //   no local output
 //   drop_cnt = 0
-//
-// Spec reason:
-//   Remote fragments with the same SEQ_NUM belong to the same packet.
-//   They must be buffered, reordered by FRAG_NUM, merged, and sent with
-//   a regenerated CRC16.
-//
-// Note:
-//   The PDF does not provide an explicit last-fragment marker. This test
-//   treats the driven two-fragment sequence as one packet and verifies
-//   that the DUT does not emit fragment 1 as a complete packet too early.
-// ============================================================
 
 `ifndef REMOTE_TWO_FRAGMENT_IN_ORDER_TEST_SV
 `define REMOTE_TWO_FRAGMENT_IN_ORDER_TEST_SV

@@ -2,7 +2,6 @@
 // ============================================================
 // Remote Backpressure Test
 // ------------------------------------------------------------
-// This test extends bird_base_test.
 //
 // Scenario:
 //   Send one valid REMOTE fragment.
@@ -27,13 +26,8 @@
 
 class remote_backpressure_test extends bird_base_test;
 
-  // ------------------------------------------------------------
-  // Constructor
-  // ------------------------------------------------------------
-  function new(
-    virtual bird_if vif,
-    string name = "remote_backpressure_test"
-  );
+
+  function new(virtual bird_if vif,string name = "remote_backpressure_test");
     super.new(vif, name);
   endfunction
 
