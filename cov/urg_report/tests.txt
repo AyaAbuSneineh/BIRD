@@ -1,0 +1,56 @@
+Tests
+
+Total Coverage Summary 
+SCORE  LINE   COND   TOGGLE FSM    BRANCH 
+ 84.60  94.48  65.85  74.77 100.00  87.91 
+
+
+Total tests in report: 45
+-------------------------------------------------------------------------------
+Data from the following tests was used to generate this report
+cov/vcs_cov/drop_count_hold_after_valid_test             
+cov/vcs_cov/payload_len_zero_drop_test                   
+cov/vcs_cov/remote_seq_mismatch_drop_test                
+cov/vcs_cov/reset_during_remote_accumulation_test        
+cov/vcs_cov/tbtop_unknown_testname                       
+cov/vcs_cov/remote_reserved_high_bits_drop_test          
+cov/vcs_cov/reserved_mid_bits_drop_test                  
+cov/vcs_cov/remote_two_fragment_in_order_test            
+cov/vcs_cov/remote_frag3_seq4_next                       
+cov/vcs_cov/local_backpressure_test                      
+cov/vcs_cov/remote_payload_len_zero_drop_test            
+cov/vcs_cov/local_payload_len_large_valid_test           
+cov/vcs_cov/local_multi_byte_test                        
+cov/vcs_cov/reset_after_drop_test                        
+cov/vcs_cov/remote_multi_byte_test                       
+cov/vcs_cov/local_invalid_frag_test                      
+cov/vcs_cov/remote_frag2_seq2_next                       
+cov/vcs_cov/remote_frag_zero_drop_test                   
+cov/vcs_cov/remote_seq_max_valid_test                    
+cov/vcs_cov/random_all_cases_test                        
+cov/vcs_cov/remote_single_fragment_test                  
+cov/vcs_cov/local_remote_switching_test                  
+cov/vcs_cov/remote_seq_zero_drop_test                    
+cov/vcs_cov/remote_reserved_mid_bits_drop_test           
+cov/vcs_cov/local_seq_zero_drop_test                     
+cov/vcs_cov/local_seq_non1_valid_test                    
+cov/vcs_cov/remote_payload_len_large_valid_test          
+cov/vcs_cov/remote_three_fragment_3_1_2_test             
+cov/vcs_cov/remote_three_fragment_in_order_test          
+cov/vcs_cov/drop_count_accumulation_test                 
+cov/vcs_cov/remote_reserved_bits_drop_test               
+cov/vcs_cov/remote_new_packet_while_incomplete_drop_test 
+cov/vcs_cov/remote_two_fragment_out_of_order_test        
+cov/vcs_cov/reserved_bits_drop_test                      
+cov/vcs_cov/remote_backpressure_test                     
+cov/vcs_cov/local_seq_max_valid_test                     
+cov/vcs_cov/reserved_high_bits_drop_test                 
+cov/vcs_cov/remote_frag5_seq3_next                       
+cov/vcs_cov/remote_single_seq5_frag1_valid_test          
+cov/vcs_cov/local_basic_test                             
+cov/vcs_cov/local_frag_zero_drop_test                    
+cov/vcs_cov/remote_drop_recovery_test                    
+cov/vcs_cov/remote_seq_mismatch_same_frag_drop_test      
+cov/vcs_cov/tbtop_no_plusarg_default                     
+cov/vcs_cov/reset_initial_test                           
+
