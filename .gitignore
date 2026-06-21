@@ -1,0 +1,28 @@
+# VCS generated files
+simv
+simv_cov
+simv.daidir/
+simv_cov.daidir/
+csrc/
+ucli.key
+
+# Logs
+logs/
+*.log
+
+# Coverage database
+cov/vcs_cov.vdb/
+*.vdb/
+
+# Backup / broken files
+*.bak*
+*.current_broken
+*.bak_no_assertions
+*.bak_random_split
+
+# OS/editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
