@@ -1,0 +1,217 @@
+#!/bin/bash
+
+cd "$(dirname "$0")/.."
+
+mkdir -p logs/vcs_directed
+mkdir -p logs/vcs_random
+mkdir -p logs/vcs_all
+
+summary_file="logs/vcs_all/summary.txt"
+rm -f "$summary_file"
+
+direct_tests=(
+  reset_initial_test
+  reset_after_drop_test
+  reset_during_remote_accumulation_test
+
+  local_basic_test
+  local_multi_byte_test
+  local_seq_non1_valid_test
+  local_seq_max_valid_test
+  local_seq_zero_drop_test
+  local_frag_zero_drop_test
+  local_invalid_frag_test
+  local_payload_len_large_valid_test
+  local_backpressure_test
+  local_remote_switching_test
+
+  reserved_bits_drop_test
+  reserved_mid_bits_drop_test
+  reserved_high_bits_drop_test
+  payload_len_zero_drop_test
+
+  drop_count_accumulation_test
+  drop_count_hold_after_valid_test
+
+  remote_single_fragment_test
+  remote_multi_byte_test
+  remote_seq_max_valid_test
+  remote_seq_zero_drop_test
+  remote_seq_mismatch_drop_test
+  remote_frag_zero_drop_test
+  remote_payload_len_zero_drop_test
+  remote_payload_len_large_valid_test
+  remote_reserved_bits_drop_test
+  remote_reserved_mid_bits_drop_test
+  remote_reserved_high_bits_drop_test
+  remote_two_fragment_in_order_test
+  remote_two_fragment_out_of_order_test
+  remote_new_packet_while_incomplete_drop_test
+  remote_backpressure_test
+  remote_drop_recovery_test
+)
+
+random_test="random_all_cases_test"
+
+total=0
+pass=0
+fail=0
+
+direct_total=0
+direct_pass=0
+direct_fail=0
+
+random_total=0
+random_pass=0
+random_fail=0
+
+echo "============================================================"
+echo " BIRD VCS Regression"
+echo " Direct tests first, random cases second"
+echo "============================================================"
+
+echo "============================================================" >> "$summary_file"
+echo "BIRD VCS Regression Summary" >> "$summary_file"
+echo "Direct tests first, random cases second" >> "$summary_file"
+echo "============================================================" >> "$summary_file"
+
+
+echo "============================================================"
+echo " Running DIRECT tests"
+echo "============================================================"
+
+echo "" >> "$summary_file"
+echo "============================================================" >> "$summary_file"
+echo "DIRECT TESTS" >> "$summary_file"
+echo "============================================================" >> "$summary_file"
+
+for t in "${direct_tests[@]}"; do
+  total=$((total + 1))
+  direct_total=$((direct_total + 1))
+
+  echo "------------------------------------------------------------"
+  echo "Running direct test: $t"
+  echo "------------------------------------------------------------"
+
+  log_file="logs/vcs_directed/${t}.log"
+
+  ./simv +TESTNAME=$t -l "$log_file" > /dev/null 2>&1
+
+  if [ -f "$log_file" ] && grep -q "TEST RESULT[[:space:]]*:[[:space:]]*PASS" "$log_file"; then
+    echo "$t : PASS"
+    echo "$t : PASS" >> "$summary_file"
+
+    pass=$((pass + 1))
+    direct_pass=$((direct_pass + 1))
+
+  elif [ -f "$log_file" ] && grep -q "TEST RESULT[[:space:]]*:[[:space:]]*FAIL" "$log_file"; then
+    echo "$t : FAIL"
+    echo "$t : FAIL" >> "$summary_file"
+
+    fail=$((fail + 1))
+    direct_fail=$((direct_fail + 1))
+
+  else
+    echo "$t : FAIL / NO RESULT FOUND"
+    echo "$t : FAIL / NO RESULT FOUND" >> "$summary_file"
+
+    fail=$((fail + 1))
+    direct_fail=$((direct_fail + 1))
+  fi
+done
+
+echo "============================================================"
+echo " DIRECT Summary"
+echo " Total : $direct_total"
+echo " PASS  : $direct_pass"
+echo " FAIL  : $direct_fail"
+echo "============================================================"
+
+echo "------------------------------------------------------------" >> "$summary_file"
+echo "DIRECT Summary" >> "$summary_file"
+echo "Total : $direct_total" >> "$summary_file"
+echo "PASS  : $direct_pass" >> "$summary_file"
+echo "FAIL  : $direct_fail" >> "$summary_file"
+
+
+echo "============================================================"
+echo " Running RANDOM cases"
+echo "============================================================"
+
+echo "" >> "$summary_file"
+echo "============================================================" >> "$summary_file"
+echo "RANDOM CASES" >> "$summary_file"
+echo "============================================================" >> "$summary_file"
+
+random_log="logs/vcs_random/${random_test}.log"
+
+echo "------------------------------------------------------------"
+echo "Running random test container: $random_test"
+echo "NUM_PER_CASE = ${NUM_PER_CASE:-2}"
+echo "------------------------------------------------------------"
+
+./simv +TESTNAME=$random_test +NUM_PER_CASE=${NUM_PER_CASE:-2} +ntb_random_seed=random -l "$random_log" > /dev/null 2>&1
+
+if [ -f "$random_log" ]; then
+  random_total=$(grep -c "RANDOM_CASE_RESULT" "$random_log")
+  random_pass=$(grep -c "RANDOM_CASE_RESULT[[:space:]]*:[[:space:]]*PASS" "$random_log")
+  random_fail=$(grep -c "RANDOM_CASE_RESULT[[:space:]]*:[[:space:]]*FAIL" "$random_log")
+else
+  random_total=0
+  random_pass=0
+  random_fail=0
+fi
+
+if [ "$random_total" -eq 0 ]; then
+  echo "$random_test : FAIL / NO RANDOM CASE RESULTS"
+  echo "$random_test : FAIL / NO RANDOM CASE RESULTS" >> "$summary_file"
+
+  random_total=1
+  random_pass=0
+  random_fail=1
+
+else
+  echo "------------------------------------------------------------"
+  echo "Random case results:"
+  echo "------------------------------------------------------------"
+
+  grep "RANDOM_CASE_RESULT" "$random_log" | sed 's/^[[:space:]]*//'
+
+  echo "Random case results:" >> "$summary_file"
+  grep "RANDOM_CASE_RESULT" "$random_log" | sed 's/^[[:space:]]*//' >> "$summary_file"
+fi
+
+total=$((total + random_total))
+pass=$((pass + random_pass))
+fail=$((fail + random_fail))
+
+echo "============================================================"
+echo " RANDOM Summary"
+echo " Total : $random_total"
+echo " PASS  : $random_pass"
+echo " FAIL  : $random_fail"
+echo "============================================================"
+
+echo "------------------------------------------------------------" >> "$summary_file"
+echo "RANDOM Summary" >> "$summary_file"
+echo "Total : $random_total" >> "$summary_file"
+echo "PASS  : $random_pass" >> "$summary_file"
+echo "FAIL  : $random_fail" >> "$summary_file"
+
+
+echo "============================================================"
+echo " FINAL Regression Summary"
+echo " Total tests/cases : $total"
+echo " PASS              : $pass"
+echo " FAIL              : $fail"
+echo "============================================================"
+
+echo "" >> "$summary_file"
+echo "============================================================" >> "$summary_file"
+echo "FINAL Regression Summary" >> "$summary_file"
+echo "Total tests/cases : $total" >> "$summary_file"
+echo "PASS              : $pass" >> "$summary_file"
+echo "FAIL              : $fail" >> "$summary_file"
+echo "============================================================" >> "$summary_file"
+
+echo "Summary saved to: $summary_file"
